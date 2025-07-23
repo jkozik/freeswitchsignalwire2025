@@ -1,0 +1,13 @@
+<include>
+   <extension name="signalwire INTEGRATIONS outgoing call">
+    <condition field="destination_number" expression="^(\d{11})$">
+      <action application="log" data="Call outgoing from Freeswich thru Signalwire connector ${caller_id_number} " />
+      <action application="set" data="effective_caller_id_number=${outbound_caller_id_number}"/>
+      <action application="set" data="effective_caller_id_name=${outbound_caller_id_name}"/>
+      <action application="answer"/>
+      <action application="bridge" data="sofia/gateway/signalwire/+$1"/>
+    </condition>
+   </extension>
+</include>
+
+

@@ -1,0 +1,19 @@
+services:
+  freeswitch:
+    container_name: freeswitch
+    image: safarov/freeswitch
+    network_mode: "host"
+    environment:
+      SOUND_RATES: "8000:16000"
+      SOUND_TYPES: "en-us-callie"
+    cap_add:
+      - SYS_NICE # Enable RT features
+    env_file: .env    
+    volumes:
+      - './configs/freeswitch:/etc/freeswitch'
+      - './configs/freeswitch-sounds:/usr/share/freeswitch/sounds'
+      - ./configs/storage:/var/lib/freeswitch/storage
+      - ./logs:/var/log/freeswitch/
+ 
+    command: ["freeswitch", "-nonatmap", "-nonat"]      
+

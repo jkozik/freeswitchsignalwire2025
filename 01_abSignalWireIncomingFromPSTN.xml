@@ -1,0 +1,8 @@
+<include>
+    <extension name="SignalWire INTEGRATIONS incoming call">
+      <condition field="destination_number" expression="^(\+16303874223)$"> <!-- the number you assigned in your dashboard -->
+        <action application="log" data="Call from Signalwire connector ${caller_id_number} " />
+        <action application="bridge" data="user/1001"/>
+      </condition>
+    </extension>
+</include>
