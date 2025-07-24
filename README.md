@@ -188,3 +188,87 @@ The token above needs to be entered into the Signalwire.com portal to connect th
 The [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch) needs to be tweaked.  I have a script that applies the changes that I made.
 
 ```
+jkozik@u2004:~/projects/freeswitchsignalwire2025$ . ./initsetup.sh
+enter initsetup.sh
+Change default password
+Copy SignalWire dialplan files.  Incoming/Outgoing
+Successfully copied 2.56kB to freeswitch:/etc/freeswitch/dialplan/default/
+Successfully copied 2.05kB to freeswitch:/etc/freeswitch/dialplan/default/
+Set RTP Start/End Ports to match home network
+inactivate IPv6
+jkozik@u2004:~/projects/freeswitchsignalwire2025$
+```
+
+Here's brief discussion.  Everytime I setup freeswitch, I manually tweak some of the setup after installation.  This simple script runs from the host environment and changes things in the running container.  
+- I change the default password
+- Signalwire dialplan support.  Freeswitch's dialing plan does not contain default support for Signalwire SIP trunking.  In the [mod_signalwire](https://developer.signalwire.com/freeswitch/FreeSWITCH-Explained/Modules/mod_signalwire_19595544/#3-dialplan-sample) documentation, it shows an example dialing plan segment needed to link the Signalwire / Freeswitch connector into a Freeswitch installation
+- RTP Ports.  My home network has multiple VoIP services.  I want Freeswitch to use a very specific ranges of ports.  This reflects in my firewall settings and the switch.conf.xml file.
+- IPv6.  I don't trust my IPv6 setup at home.  Thus I turned off Freeswitch's IPv6 profiles.
+
+These simple tweaks that I do, I forget them.  Then a year later I create a new Freeswitch environment and have to rediscover them.  Thus I document here these changes.
+
+Now, trigger Freeswitch to reload its settings files:
+```
+jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh -c "fs_cli -x reloadxml"
++OK [Success]
+```
+
+## Verify Basic Functionality
+The Freeswitch container from [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch) is running.  I have applied the initalsetup.sh script.  Let's verify some basics.
+### Verify SIP Stack
+```
+jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh -c "fs_cli -x 'sofia status'"
+                     Name          Type                                       Data      State
+=================================================================================================
+            external-ipv6       profile                   sip:mod_sofia@[::1]:5080      RUNNING (0)
+          192.168.100.128         alias                                   internal      ALIASED
+                 external       profile          sip:mod_sofia@69.243.158.102:5080      RUNNING (0)
+    external::example.com       gateway                    sip:joeuser@example.com      NOREG
+            internal-ipv6       profile                   sip:mod_sofia@[::1]:5060      RUNNING (0)
+                 internal       profile          sip:mod_sofia@69.243.158.102:5060      RUNNING (0)
+=================================================================================================
+4 profiles 1 alias
+
+jkozik@u2004:~/projects/freeswitchsignalwire2025$
+```
+
+Note:  here, the Signalwire connector is not setup.  I am just trying to verify basic Freeswitch functionality.  
+
+### Verify SIP registrations
+Note from my diagram above, I have two VoIP clients on my home LAN, configured to point to port 5060 of the Freeswitch.  They are on.  Here's what Freeswitch's SIP stack sees:
+```
+jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh -c "fs_cli -x 'show registrations'"
+reg_user,realm,token,url,expires,network_ip,network_port,network_proto,hostname,metadata
+1002,192.168.100.128,0_3443613935@192.168.100.94,sofia/internal/sip:1002@192.168.100.94:5060;transport=TCP,1753385645,192.168.100.94,11807,tcp,u2004.kozik.net,
+1001,192.168.100.128,HrPIgrWZbLjx-jeRJKXmKw..,sofia/internal/sip:1001@192.168.100.122:64379;rinstance=838a90f680202103;transport=UDP,1753382108,192.168.100.122,64379,udp,u2004.kozik.net,
+2 total.
+jkozik@u2004:~/projects/freeswitchsignalwire2025$
+```
+### Client 1001 calls cliet 1002
+<img width="283" height="124" alt="image" src="https://github.com/user-attachments/assets/b6e9e90e-133f-4a68-8f32-001622c5407d" />
+
+Just a simple test call.  They answer just fine.  Here's a super brief SIP trace.
+
+<img width="1288" height="228" alt="image" src="https://github.com/user-attachments/assets/7aae4980-0117-4538-9047-b19d00b2b6fc" />
+
+<img width="1375" height="566" alt="image" src="https://github.com/user-attachments/assets/e7ffb505-6e86-46af-81e5-00fff4b47904" />
+
+In the logs/freeswitch.log file, there's tons of detail. It is worth learning.  But not for this note.
+
+# Signalwire to Freeswitch Connector
+<img width="366" height="268" alt="image" src="https://github.com/user-attachments/assets/4ccd62d9-43e8-458f-9a37-306321e2bf19" />
+This is the most important part for me.  The Freeswitch setup is naked without the Signalwire connection.  This is really easy, but it took me a long time. 
+
+The key reference is Omid's youtube video:
+<img width="1101" height="588" alt="image" src="https://github.com/user-attachments/assets/361dfcfa-1b6c-44a3-a3b6-16b163827b3d" />
+[Learn FreeSWITCH (Part8) - SignalWire Connector](https://www.youtube.com/watch?v=ax1uL4Z9Nao&t=63s)
+
+My freeswitch instance was configured with the mod_signalwire module.  It is cycling, trying to connect to the Signalwire server.  Tailing the log file, you see this:
+```
+jkozik@u2004:~/projects/freeswitchsignalwire2025$ grep  mod_signalwire.c logs/freeswitch.log  | tail
+2025-07-24 19:09:47.748686 [NOTICE] mod_signalwire.c:379 Go to https://signalwire.com to set up your Connector now! Enter connection token 25e17bd7-c8cd-422f-8e50-dfca2ccc7a3b
+2025-07-24 19:09:47.748686 [INFO] mod_signalwire.c:1009 Next SignalWire adoption check in 15 minutes
+2025-07-24 19:24:47.028733 [NOTICE] mod_signalwire.c:379 Go to https://signalwire.com to set up your Connector now! Enter connection token 25e17bd7-c8cd-422f-8e50-dfca2ccc7a3b
+jkozik@u2004:~/projects/freeswitchsignalwire2025$
+```
+Take that token to Signalwire->Integrations, "Connect to Freeswitch" on my signalwire.com portal.  Create a connection and link it to my signalwire phone number 630-387-XXXX.
