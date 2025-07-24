@@ -1,5 +1,5 @@
 # Freeswitch docker container linked to Signalwire 2025
-I went to [docker hub](https://hub.docker.com/) and [searched for freeswitch](https://hub.docker.com/search?q=freeswitch).  I was looking for the office docker image.  I found dozens of them.  Unsure of which one to pick, I decided to base this project on `[safarov/freeswitch](https://hub.docker.com/r/safarov/freeswitch)`.  It has over 1M downloads, and was only 2 months old.  Someday, I'll learn the official docker image release process.
+I went to [docker hub](https://hub.docker.com/) and [searched for freeswitch](https://hub.docker.com/search?q=freeswitch).  I was looking for the office docker image.  I found dozens of them.  Unsure of which one to pick, I decided to base this project on [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch).  It has over 1M downloads, and was only 2 months old.  Someday, I'll learn the official docker image release process.
 
 <img width="532" height="387" alt="image" src="https://github.com/user-attachments/assets/bffcea07-dcc6-4f6e-8d49-c4e5aae7b632" />
 
