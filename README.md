@@ -271,4 +271,43 @@ jkozik@u2004:~/projects/freeswitchsignalwire2025$ grep  mod_signalwire.c logs/fr
 2025-07-24 19:24:47.028733 [NOTICE] mod_signalwire.c:379 Go to https://signalwire.com to set up your Connector now! Enter connection token 25e17bd7-c8cd-422f-8e50-dfca2ccc7a3b
 jkozik@u2004:~/projects/freeswitchsignalwire2025$
 ```
-Take that token to Signalwire->Integrations, "Connect to Freeswitch" on my signalwire.com portal.  Create a connection and link it to my signalwire phone number 630-387-XXXX.
+Take that token to Signalwire->Integrations, "Connect to Freeswitch" on my signalwire.com portal.  Create a connection and link it to my signalwire phone number 630-387-XXXX.  Follow [Omid's youtube video](https://www.youtube.com/watch?v=ax1uL4Z9Nao&t=63s). 
+## Reload mod_signalwire
+The Freeswitch algorithm checks the Signalwire service once every 15 minutes.  I don't want to wait that long, thus, I did a reload:
+```
+jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh -c "fs_cli -x 'reload mod_signalwire'"
++OK Reloading XML
++OK module unloaded
++OK module loaded
+```
+Check the log files:
+```
+jkozik@u2004:~/projects/freeswitchsignalwire2025$ grep  mod_signalwire.c logs/freeswitch.log  | tail -f
+2025-07-24 21:05:20.228707 [INFO] mod_signalwire.c:964 Disconnecting from SignalWire
+2025-07-24 21:05:20.550307 [CONSOLE] mod_signalwire.c:915 Welcome to
+2025-07-24 21:05:20.550307 [INFO] mod_signalwire.c:616
+2025-07-24 21:05:20.808744 [INFO] mod_signalwire.c:404 SignalWire adoption of this FreeSWITCH completed
+2025-07-24 21:05:22.108725 [INFO] mod_signalwire.c:524 SignalWire Session State Change: [Normal=>Online] Status: 0 Reason: Manager completed state change request
+2025-07-24 21:05:23.868717 [INFO] mod_signalwire.c:1030 Connected to SignalWire
+2025-07-24 21:05:25.108720 [DEBUG] mod_signalwire.c:1103 "<?xml version="1.0"?><document type="freeswitch/xml"><section name="configuration" description="Various Configuration"><configuration name="sofia.conf" description="sofia Endpoint"><profiles><profile name="signalwire"><gateways><gateway name="signalwire"><param name="username" value="caca1ddb40128438e53cb875f3faad0e" /><param name="password" value="3a2bbbac50be5c182436905c87c95a82" /><param name="proxy" value="jkozik-63eecb1e59a343e4b71567f323a71d52.sip.signalwire.com" /><param name="register" value="true" /><param name="register-transport" value="tls" /><param name="extension" value="auto_to_user" /><param name="dtmf-type" value="rfc2833" /><param name="caller-id-in-from" value="false" /><variables><variable name="rtp_secure_media" value="optional:AEAD_AES_256_GCM_8:AES_256_CM_HMAC_SHA1_80:AES_CM_128_HMAC_SHA1_80:AES_256_CM_HMAC_SHA1_32:AES_CM_128_HMAC_SHA1_32" /></variables></gateway></gateways><settings><param name="debug" value="0" /><param name="dialplan" value="signalwire" /><param name="context" value="default" /><param name="rtp-timer-name" value="soft" /><param name="rtp-ip" value="192.168.100.128" /><param name="sip-ip" value="192.168.100.128" /><param name="ext-rtp-ip" value="69.243.158.102" /><param name="ext-sip-ip" value="69.243.158.102" /><param name="rtp-timeout-sec" value="300" /><param name="rtp-hold-timeout-sec" value="1800" /><param name="sip-port" value="6050" /><param name="tls" value="True" /><param name="tls-only" value="true" /><param name="tls-bind-params" value="transport=tls" /><param name="tls-sip-port" value="6050" /><param name="tls-verify-date" value="true" /><param name="tls-verify-policy" value="none" /><param name="tls-verify-depth" value="2" /><param name="codec-prefs" value="OPUS,G722,PCMU,PCMA,G729,VP8,H264" /><param name="inbound-codec-negotiation" value="generous" /><param name="inbound-late-negotiation" value="true" /><param name="manage-presence" value="false" /><param name="auth-calls" value="false" /></settings></profile></profiles></configuration></section></document>"
+2025-07-24 21:05:25.108720 [INFO] mod_signalwire.c:1142 gwlist = "Invalid Profile [signalwire]"
+2025-07-24 21:05:25.108720 [INFO] mod_signalwire.c:1115 profile MD5 = "4c990c0416af1a4b657cd722e32a09ea"
+2025-07-24 21:05:25.108720 [INFO] mod_signalwire.c:1129 Received configuration from SignalWire
+```
+This is good.  Next check the SIP stack:
+```
+jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh -c "fs_cli -x 'sofia status'"
+                     Name          Type                                       Data      State
+=================================================================================================
+            external-ipv6       profile                   sip:mod_sofia@[::1]:5080      RUNNING (0)
+               signalwire       profile          sip:mod_sofia@69.243.158.102:6050      RUNNING (0) (TLS)
+   signalwire::signalwire       gateway   sip:caca1ddb40128438e53cb875f3faad0e@jkozik-63eecb1e59a343e4b71567f323a71d52.sip.signalwire.com       REGED
+          192.168.100.128         alias                                   internal      ALIASED
+                 external       profile          sip:mod_sofia@69.243.158.102:5080      RUNNING (0)
+    external::example.com       gateway                    sip:joeuser@example.com      NOREG
+            internal-ipv6       profile                   sip:mod_sofia@[::1]:5060      RUNNING (0)
+                 internal       profile          sip:mod_sofia@69.243.158.102:5060      RUNNING (0)
+=================================================================================================
+5 profiles 1 alias
+```
+Note:  It is just like the previous stack with addition of the `signalwire::signalwire` gateway.  Note:  is it `REGED`
