@@ -179,6 +179,10 @@ The key reference is Omid's youtube video:
 <img width="1101" height="588" alt="image" src="https://github.com/user-attachments/assets/361dfcfa-1b6c-44a3-a3b6-16b163827b3d" />
 [Learn FreeSWITCH (Part8) - SignalWire Connector](https://www.youtube.com/watch?v=ax1uL4Z9Nao&t=63s)
 
+
+https://youtu.be/ax1uL4Z9Nao?si=NXEp5Il1MY3DRfOk
+
+
 My freeswitch instance was configured with the mod_signalwire module.  It is cycling, trying to connect to the Signalwire server.  Tailing the log file, you see this:
 ```
 jkozik@u2004:~/projects/freeswitchsignalwire2025$ grep  mod_signalwire.c logs/freeswitch.log  | tail
