@@ -6,7 +6,8 @@ I went to [docker hub](https://hub.docker.com/) and [searched for freeswitch](ht
 What I wanted to do was run a freeswitch container on my home LAN and connect it to Signalwire.  I wanted to do a setup that was a push button as possible.  
 
 ## Here's my target architecture:
-<img width="900" height="512" alt="image" src="https://github.com/user-attachments/assets/9bff192a-5dac-4060-bd6f-9296324a5358" />
+<img width="907" height="519" alt="image" src="https://github.com/user-attachments/assets/937ea055-2f88-4ab4-8730-13ae83d0b70a" />
+
 
 ## Here's my firewall settings
 <img width="1414" height="385" alt="image" src="https://github.com/user-attachments/assets/7ce2c92e-4446-410a-a7d7-b975d3c6d8a7" />
