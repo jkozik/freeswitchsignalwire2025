@@ -3,7 +3,7 @@ I went to [docker hub](https://hub.docker.com/) and [searched for freeswitch](ht
 
 <img width="790" height="296" alt="image" src="https://github.com/user-attachments/assets/1c64263b-4a05-43f7-9cd2-7e1b340439c1" />
 
-What I wanted to do was run a freeswitch container on my home LAN and connect it to Signalwire.  I wanted to a setup that was a push button as possible.  
+What I wanted to do was run a freeswitch container on my home LAN and connect it to Signalwire.  I wanted to do a setup that was a push button as possible.  
 
 ## Here's my target architecture:
 <img width="900" height="512" alt="image" src="https://github.com/user-attachments/assets/9bff192a-5dac-4060-bd6f-9296324a5358" />
