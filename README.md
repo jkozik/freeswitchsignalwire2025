@@ -62,7 +62,7 @@ jkozik@u2004:~/projects/freeswitchsignalwire2025$ cd logs
 jkozik@u2004:~/projects/freeswitchsignalwire2025/logs$ ls
 cdr-csv  freeswitch.log  freeswitch.xml.fsxml
 ```
-Here's the first 100 lines of  the freeswitch container boots log.
+Here's the first several lines of  the freeswitch container boots log.
 ```
 jkozik@u2004:~/projects/freeswitchsignalwire2025/logs$ head -100 freeswitch.log
 2025-07-24 02:54:09.265084 [CONSOLE] switch_loadable_module.c:1803 Successfully Loaded [mod_logfile]
@@ -79,92 +79,7 @@ jkozik@u2004:~/projects/freeswitchsignalwire2025/logs$ head -100 freeswitch.log
 2025-07-24 02:54:09.267355 [DEBUG] mod_cdr_csv.c:415 Adding template asterisk.
 2025-07-24 02:54:09.267357 [DEBUG] mod_cdr_csv.c:415 Adding template opencdrrate.
 2025-07-24 02:54:09.267648 [CONSOLE] switch_loadable_module.c:1803 Successfully Loaded [mod_cdr_csv]
-2025-07-24 02:54:09.267673 [NOTICE] switch_loadable_module.c:412 Adding API Function 'cdr_csv'
-2025-07-24 02:54:09.268120 [CONSOLE] switch_loadable_module.c:1803 Successfully Loaded [mod_event_socket]
-2025-07-24 02:54:09.268146 [NOTICE] switch_loadable_module.c:350 Adding Application 'socket'
-2025-07-24 02:54:09.268172 [NOTICE] switch_loadable_module.c:412 Adding API Function 'event_sink'
-2025-07-24 02:54:09.270206 [INFO] mod_sofia.c:6247 Starting initial message thread.
-2025-07-24 02:54:09.270314 [DEBUG] sofia.c:4628 debug [0]
-2025-07-24 02:54:09.270328 [DEBUG] sofia.c:4628 sip-trace [no]
-2025-07-24 02:54:09.270333 [DEBUG] sofia.c:4628 sip-capture [no]
-2025-07-24 02:54:09.270335 [DEBUG] sofia.c:4628 rfc2833-pt [101]
-2025-07-24 02:54:09.270343 [DEBUG] sofia.c:4628 sip-port [5080]
-2025-07-24 02:54:09.270350 [DEBUG] sofia.c:4628 dialplan [XML]
-2025-07-24 02:54:09.270360 [DEBUG] sofia.c:4628 context [public]
-2025-07-24 02:54:09.270365 [DEBUG] sofia.c:4628 dtmf-duration [2000]
-2025-07-24 02:54:09.270370 [DEBUG] sofia.c:4628 inbound-codec-prefs [OPUS,G722,PCMU,PCMA,H264,VP8]
-2025-07-24 02:54:09.270378 [DEBUG] sofia.c:4628 outbound-codec-prefs [OPUS,G722,PCMU,PCMA,H264,VP8]
-2025-07-24 02:54:09.270383 [DEBUG] sofia.c:4628 hold-music [local_stream://moh]
-2025-07-24 02:54:09.270389 [DEBUG] sofia.c:4628 rtp-timer-name [soft]
-2025-07-24 02:54:09.270393 [DEBUG] sofia.c:4628 local-network-acl [localnet.auto]
-2025-07-24 02:54:09.270397 [DEBUG] sofia.c:4628 manage-presence [false]
-2025-07-24 02:54:09.270402 [DEBUG] sofia.c:4628 inbound-codec-negotiation [generous]
-2025-07-24 02:54:09.270408 [DEBUG] sofia.c:4628 nonce-ttl [60]
-2025-07-24 02:54:09.270415 [DEBUG] sofia.c:4628 auth-calls [false]
-2025-07-24 02:54:09.270422 [DEBUG] sofia.c:4628 inbound-late-negotiation [true]
-2025-07-24 02:54:09.270425 [DEBUG] sofia.c:4628 inbound-zrtp-passthru [true]
-2025-07-24 02:54:09.270428 [DEBUG] sofia.c:4628 rtp-ip [::1]
-2025-07-24 02:54:09.270433 [DEBUG] sofia.c:4628 sip-ip [::1]
-2025-07-24 02:54:09.270436 [DEBUG] sofia.c:4628 rtp-timeout-sec [300]
-2025-07-24 02:54:09.270440 [WARNING] sofia.c:5227 rtp-timeout-sec deprecated use media_timeout variable.
-2025-07-24 02:54:09.270442 [DEBUG] sofia.c:4628 rtp-hold-timeout-sec [1800]
-2025-07-24 02:54:09.270448 [WARNING] sofia.c:5234 rtp-hold-timeout-sec deprecated use media_hold_timeout variable.
-2025-07-24 02:54:09.270450 [DEBUG] sofia.c:4628 tls [false]
-2025-07-24 02:54:09.270457 [DEBUG] sofia.c:4628 tls-only [false]
-2025-07-24 02:54:09.270464 [DEBUG] sofia.c:4628 tls-bind-params [transport=tls]
-2025-07-24 02:54:09.270469 [DEBUG] sofia.c:4628 tls-sip-port [5081]
-2025-07-24 02:54:09.270475 [DEBUG] sofia.c:4628 tls-passphrase []
-2025-07-24 02:54:09.270481 [DEBUG] sofia.c:4628 tls-verify-date [true]
-2025-07-24 02:54:09.270486 [DEBUG] sofia.c:4628 tls-verify-policy [none]
-2025-07-24 02:54:09.270502 [DEBUG] sofia.c:4628 tls-verify-depth [2]
-2025-07-24 02:54:09.270510 [DEBUG] sofia.c:4628 tls-verify-in-subjects []
-2025-07-24 02:54:09.270516 [DEBUG] sofia.c:4628 tls-version [tlsv1,tlsv1.1,tlsv1.2]
-2025-07-24 02:54:09.270525 [INFO] sofia.c:6028 Setting MAX Auth Validity to 0 Attempts
-2025-07-24 02:54:09.270613 [NOTICE] sofia.c:6195 Started Profile external-ipv6 [sofia_reg_external-ipv6]
-2025-07-24 02:54:09.270708 [DEBUG] sofia.c:4628 debug [0]
-2025-07-24 02:54:09.270714 [DEBUG] sofia.c:4628 sip-trace [no]
-2025-07-24 02:54:09.270716 [DEBUG] sofia.c:4628 sip-capture [no]
-2025-07-24 02:54:09.270718 [DEBUG] sofia.c:4628 rfc2833-pt [101]
-2025-07-24 02:54:09.270722 [DEBUG] sofia.c:4628 sip-port [5080]
-2025-07-24 02:54:09.270727 [DEBUG] sofia.c:4628 dialplan [XML]
-2025-07-24 02:54:09.270732 [DEBUG] sofia.c:4628 context [public]
-2025-07-24 02:54:09.270736 [DEBUG] sofia.c:4628 dtmf-duration [2000]
-2025-07-24 02:54:09.270743 [DEBUG] sofia.c:4628 inbound-codec-prefs [OPUS,G722,PCMU,PCMA,H264,VP8]
-2025-07-24 02:54:09.270747 [DEBUG] sofia.c:4628 outbound-codec-prefs [OPUS,G722,PCMU,PCMA,H264,VP8]
-2025-07-24 02:54:09.270751 [DEBUG] sofia.c:4628 hold-music [local_stream://moh]
-2025-07-24 02:54:09.270756 [DEBUG] sofia.c:4628 rtp-timer-name [soft]
-2025-07-24 02:54:09.270760 [DEBUG] sofia.c:4628 local-network-acl [localnet.auto]
-2025-07-24 02:54:09.270765 [DEBUG] sofia.c:4628 manage-presence [false]
-2025-07-24 02:54:09.270770 [DEBUG] sofia.c:4628 inbound-codec-negotiation [generous]
-2025-07-24 02:54:09.270773 [DEBUG] sofia.c:4628 nonce-ttl [60]
-2025-07-24 02:54:09.270777 [DEBUG] sofia.c:4628 auth-calls [false]
-2025-07-24 02:54:09.270780 [DEBUG] sofia.c:4628 inbound-late-negotiation [true]
-2025-07-24 02:54:09.270783 [DEBUG] sofia.c:4628 inbound-zrtp-passthru [true]
-2025-07-24 02:54:09.270785 [DEBUG] sofia.c:4628 rtp-ip [192.168.100.128]
-2025-07-24 02:54:09.270788 [DEBUG] sofia.c:4628 sip-ip [192.168.100.128]
-2025-07-24 02:54:09.270791 [DEBUG] sofia.c:4628 ext-rtp-ip [69.243.158.102]
-2025-07-24 02:54:09.270794 [DEBUG] sofia.c:4628 ext-sip-ip [69.243.158.102]
-2025-07-24 02:54:09.270798 [DEBUG] sofia.c:4628 rtp-timeout-sec [300]
-2025-07-24 02:54:09.270801 [WARNING] sofia.c:5227 rtp-timeout-sec deprecated use media_timeout variable.
-2025-07-24 02:54:09.270804 [DEBUG] sofia.c:4628 rtp-hold-timeout-sec [1800]
-2025-07-24 02:54:09.270806 [WARNING] sofia.c:5234 rtp-hold-timeout-sec deprecated use media_hold_timeout variable.
-2025-07-24 02:54:09.270808 [DEBUG] sofia.c:4628 tls [false]
-2025-07-24 02:54:09.270812 [DEBUG] sofia.c:4628 tls-only [false]
-2025-07-24 02:54:09.270825 [DEBUG] sofia.c:4628 tls-bind-params [transport=tls]
-2025-07-24 02:54:09.270830 [DEBUG] sofia.c:4628 tls-sip-port [5081]
-2025-07-24 02:54:09.270828 [DEBUG] sofia.c:3158 Creating agent for external-ipv6
-2025-07-24 02:54:09.270835 [DEBUG] sofia.c:4628 tls-passphrase []
-2025-07-24 02:54:09.270840 [DEBUG] sofia.c:4628 tls-verify-date [true]
-2025-07-24 02:54:09.270847 [DEBUG] sofia.c:4628 tls-verify-policy [none]
-2025-07-24 02:54:09.270852 [DEBUG] sofia.c:4628 tls-verify-depth [2]
-2025-07-24 02:54:09.270856 [DEBUG] sofia.c:4628 tls-verify-in-subjects []
-2025-07-24 02:54:09.270860 [DEBUG] sofia.c:4628 tls-version [tlsv1,tlsv1.1,tlsv1.2]
-2025-07-24 02:54:09.270869 [INFO] sofia.c:6028 Setting MAX Auth Validity to 0 Attempts
-2025-07-24 02:54:09.270938 [NOTICE] sofia.c:6195 Started Profile external [sofia_reg_external]
-2025-07-24 02:54:09.271034 [DEBUG] sofia.c:4628 debug [0]
-2025-07-24 02:54:09.271038 [DEBUG] sofia.c:4628 sip-trace [no]
-2025-07-24 02:54:09.271041 [DEBUG] sofia.c:4628 context [public]
-2025-07-24 02:54:09.271045 [DEBUG] sofia.c:4628 rfc2833-pt [101]
+
 jkozik@u2004:~/projects/freeswitchsignalwire2025/logs$
 ```
 More importantly, here's the tail of the log file
@@ -310,4 +225,21 @@ jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh
 =================================================================================================
 5 profiles 1 alias
 ```
-Note:  It is just like the previous stack with addition of the `signalwire::signalwire` gateway.  Note:  is it `REGED`
+Note:  It is just like the previous stack with addition of the `signalwire::signalwire` gateway.  Note:  is it `REGED`. 
+
+## Check Mobile phone to 1001 cient
+The way Signalwire works, the phone number that I bought maps to the client 1001. So on my mobile, I dial 630-387-XXXX, Signalwire receives it and creates a SIP INVITE to my Freeswitch. Here's the incoming SIP call flow:
+<img width="1337" height="521" alt="image" src="https://github.com/user-attachments/assets/64e9707c-9698-4b13-ad57-32052658aa6b" />
+
+## Check 1001 call to my mobile phone
+Like the previous call, it gets routed from my Freeswitch to the Signalwire server that then completes the call to my mobile phone 630-215-XXXX.
+<img width="1343" height="564" alt="image" src="https://github.com/user-attachments/assets/cbcf6ebf-d14d-4031-8a46-382e25c3a0c6" />
+
+# Summary
+Thanks to the [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch) image, Freeswitch/Signalwire setup that is realitively easy to setup.  I am attending the upcoming Cluecon conference and I'll ask if there's an official image and docker-compose.yaml file that I should use.
+
+# References 
+- Docker image [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch)
+- [mod_signalwire](https://developer.signalwire.com/freeswitch/FreeSWITCH-Explained/Modules/mod_signalwire_19595544/#3-dialplan-sample) documentation
+- [Learn FreeSWITCH (Part8) - SignalWire Connector](https://www.youtube.com/watch?v=ax1uL4Z9Nao&t=63s)
+
