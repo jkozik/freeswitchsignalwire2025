@@ -1,9 +1,9 @@
 # Freeswitch docker container linked to Signalwire 2025
-I went to [docker hub](https://hub.docker.com/) and [searched for freeswitch](https://hub.docker.com/search?q=freeswitch).  I was looking for the office docker image.  I found dozens of them.  Unsure of which one to pick, I decided to base this project on [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch).  It has over 1M downloads, and was only 2 months old.  Someday, I'll learn the official docker image release process.
+I went to [docker hub](https://hub.docker.com/) and [searched for freeswitch](https://hub.docker.com/search?q=freeswitch).  I was looking for the office docker image.  I picked this one to base this project on [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch).  It has over 1M downloads, and was only 2 months old.  
 
 <img width="790" height="296" alt="image" src="https://github.com/user-attachments/assets/1c64263b-4a05-43f7-9cd2-7e1b340439c1" />
 
-What I wanted to do was run a freeswitch container on my home LAN and connect it to Signalwire.  I wanted to do a setup that was a push button as possible.  
+What I wanted to do was run a freeswitch container on my home LAN and connect it to Signalwire.  I wanted to do a setup that was easily reproducable. Containers are better for me that installing from source or packages. 
 
 ## Here's my target architecture:
 <img width="907" height="519" alt="image" src="https://github.com/user-attachments/assets/937ea055-2f88-4ab4-8730-13ae83d0b70a" />
@@ -49,7 +49,7 @@ jkozik@u2004:~/projects/freeswitchsignalwire2025$
 ```
 A few things about the docker-compose.yaml file.  The volumes are choosen so that the configurations, tokens, sound files and logs can be saved across restarts of the docker container.  They are read-only and nothing needs to be edited from the host login. 
 
-The image safarov/freeswitch is used as is.  Its docker hub suggests usage.  I wrote the docker compose file based on those notes.
+The image safarov/freeswitch is used as is.  [Its docker hub page](https://hub.docker.com/r/safarov/freeswitch) suggests usage.  I wrote the docker compose file based on those notes.  I did not setup a systemd service. 
 
 The .env file is pulled in, but never really accessed.  It is used by a post installation script.
 
@@ -118,7 +118,7 @@ jkozik@u2004:~/projects/freeswitchsignalwire2025$
 Here's brief discussion.  Everytime I setup freeswitch, I manually tweak some of the setup after installation.  This simple script runs from the host environment and changes things in the running container.  
 - I change the default password
 - Signalwire dialplan support.  Freeswitch's dialing plan does not contain default support for Signalwire SIP trunking.  In the [mod_signalwire](https://developer.signalwire.com/freeswitch/FreeSWITCH-Explained/Modules/mod_signalwire_19595544/#3-dialplan-sample) documentation, it shows an example dialing plan segment needed to link the Signalwire / Freeswitch connector into a Freeswitch installation
-- RTP Ports.  My home network has multiple VoIP services.  I want Freeswitch to use a very specific ranges of ports.  This reflects in my firewall settings and the switch.conf.xml file.
+- RTP Ports.  My home network has multiple VoIP services.  I want Freeswitch to use a very specific range of ports.  This reflects in my firewall settings and the switch.conf.xml file.
 - IPv6.  I don't trust my IPv6 setup at home.  Thus I turned off Freeswitch's IPv6 profiles.
 
 These simple tweaks that I do, I forget them.  Then a year later I create a new Freeswitch environment and have to rediscover them.  Thus I document here these changes.
@@ -226,7 +226,7 @@ jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh
 =================================================================================================
 5 profiles 1 alias
 ```
-Note:  It is just like the previous stack with addition of the `signalwire::signalwire` gateway.  Note:  is it `REGED`. 
+Note:  It is just like the previous stack with addition of the `signalwire::signalwire` gateway.  Note:  is it `REGED`. The example.com gateway is still in there.  I try to ignore it. It is `NOREG`
 
 ## Check Mobile phone to 1001 cient
 The way Signalwire works, the phone number that I bought maps to the client 1001. So on my mobile, I dial 630-387-XXXX, Signalwire receives it and creates a SIP INVITE to my Freeswitch. Here's the incoming SIP call flow:
@@ -237,7 +237,7 @@ Like the previous call, it gets routed from my Freeswitch to the Signalwire serv
 <img width="1343" height="564" alt="image" src="https://github.com/user-attachments/assets/cbcf6ebf-d14d-4031-8a46-382e25c3a0c6" />
 
 # Summary
-Thanks to the [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch) image, Freeswitch/Signalwire setup that is realitively easy to setup.  I am attending the upcoming Cluecon conference and I'll ask if there's an official image and docker-compose.yaml file that I should use.
+Thanks to the [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch) image and thanks to [Omid's video](https://www.youtube.com/watch?v=ax1uL4Z9Nao&t=63s), the  Freeswitch/Signalwire connector setup is realitively easy to setup.  I am attending the upcoming Cluecon conference and I'll ask if there's an official image and docker-compose.yaml file that I should use.
 
 # References 
 - Docker image [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch)
