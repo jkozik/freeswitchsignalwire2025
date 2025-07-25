@@ -160,7 +160,7 @@ reg_user,realm,token,url,expires,network_ip,network_port,network_proto,hostname,
 2 total.
 jkozik@u2004:~/projects/freeswitchsignalwire2025$
 ```
-### Client 1001 calls cliet 1002
+### Client 1001 calls client 1002
 <img width="283" height="124" alt="image" src="https://github.com/user-attachments/assets/b6e9e90e-133f-4a68-8f32-001622c5407d" />
 
 Just a simple test call.  They answer just fine.  Here's a super brief SIP trace.
