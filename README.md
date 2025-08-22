@@ -8,6 +8,8 @@ What I wanted to do was run a freeswitch container on my home LAN and connect it
 ## Here's my target architecture:
 <img width="907" height="519" alt="image" src="https://github.com/user-attachments/assets/937ea055-2f88-4ab4-8730-13ae83d0b70a" />
 
+<img width="1058" height="598" alt="image" src="https://github.com/user-attachments/assets/b2b34c9b-b92a-4696-a5c5-224bf88347ea" />
+
 
 ## Here's my firewall settings
 <img width="1414" height="385" alt="image" src="https://github.com/user-attachments/assets/7ce2c92e-4446-410a-a7d7-b975d3c6d8a7" />
