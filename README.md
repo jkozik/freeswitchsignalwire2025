@@ -6,7 +6,6 @@ I went to [docker hub](https://hub.docker.com/) and [searched for freeswitch](ht
 What I wanted to do was run a freeswitch container on my home LAN and connect it to Signalwire.  I wanted to do a setup that was easily reproducable. Containers are better for me that installing from source or packages. 
 
 ## Here's my target architecture:
-<img width="907" height="519" alt="image" src="https://github.com/user-attachments/assets/937ea055-2f88-4ab4-8730-13ae83d0b70a" />
 
 <img width="1058" height="598" alt="image" src="https://github.com/user-attachments/assets/b2b34c9b-b92a-4696-a5c5-224bf88347ea" />
 
