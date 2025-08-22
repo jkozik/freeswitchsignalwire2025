@@ -12,7 +12,6 @@ What I wanted to do was run a freeswitch container on my home LAN and connect it
 
 
 ## Here's my firewall settings
-<img width="1414" height="385" alt="image" src="https://github.com/user-attachments/assets/7ce2c92e-4446-410a-a7d7-b975d3c6d8a7" />
 
 <img width="1503" height="551" alt="image" src="https://github.com/user-attachments/assets/237d757d-9ad7-442c-8fa4-513c128d7cf5" />
 
@@ -117,6 +116,7 @@ Successfully copied 2.56kB to freeswitch:/etc/freeswitch/dialplan/default/
 Successfully copied 2.05kB to freeswitch:/etc/freeswitch/dialplan/default/
 Set RTP Start/End Ports to match home network
 inactivate IPv6
+create ext-phones-5070 dialing plan. These are extension outside of the LAN, using port 5070
 jkozik@u2004:~/projects/freeswitchsignalwire2025$
 ```
 
@@ -125,6 +125,7 @@ Here's brief discussion.  Everytime I setup freeswitch, I manually tweak some of
 - Signalwire dialplan support.  Freeswitch's dialing plan does not contain default support for Signalwire SIP trunking.  In the [mod_signalwire](https://developer.signalwire.com/freeswitch/FreeSWITCH-Explained/Modules/mod_signalwire_19595544/#3-dialplan-sample) documentation, it shows an example dialing plan segment needed to link the Signalwire / Freeswitch connector into a Freeswitch installation
 - RTP Ports.  My home network has multiple VoIP services.  I want Freeswitch to use a very specific range of ports.  This reflects in my firewall settings and the switch.conf.xml file.
 - IPv6.  I don't trust my IPv6 setup at home.  Thus I turned off Freeswitch's IPv6 profiles.
+- I copied the internal.xml sip_profile into the file/profile named ext-phones-5070.  I wanted to be able to enable 4 digit dialing extensions on the Internet.  The SIP clients need to use port 5070.  Register an extension like x1005, use the default password, and use the domain freeswitch.xxxx.net:5070
 
 These simple tweaks that I do, I forget them.  Then a year later I create a new Freeswitch environment and have to rediscover them.  Thus I document here these changes.
 
@@ -139,18 +140,20 @@ The Freeswitch container from [`safarov/freeswitch`](https://hub.docker.com/r/sa
 ### Verify SIP Stack
 ```
 jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh -c "fs_cli -x 'sofia status'"
+
                      Name          Type                                       Data      State
 =================================================================================================
-            external-ipv6       profile                   sip:mod_sofia@[::1]:5080      RUNNING (0)
+          ext-phones-5070       profile         sip:mod_sofia@192.168.100.128:5070      RUNNING (0)
+               signalwire       profile          sip:mod_sofia@69.243.158.102:6051      RUNNING (0) (TLS)
+   signalwire::signalwire       gateway   sip:b46496dfcee8459191bb697dafb126f0@jkozik-63eecb1e59a343e4b71567f323a71d52.sip.signalwire.com       REGED
           192.168.100.128         alias                                   internal      ALIASED
                  external       profile          sip:mod_sofia@69.243.158.102:5080      RUNNING (0)
     external::example.com       gateway                    sip:joeuser@example.com      NOREG
-            internal-ipv6       profile                   sip:mod_sofia@[::1]:5060      RUNNING (0)
-                 internal       profile          sip:mod_sofia@69.243.158.102:5060      RUNNING (0)
+                 internal       profile         sip:mod_sofia@192.168.100.128:5060      RUNNING (0)
 =================================================================================================
 4 profiles 1 alias
 
-jkozik@u2004:~/projects/freeswitchsignalwire2025$
+freeswitch@u2004.kozik.net>
 ```
 
 Note:  here, the Signalwire connector is not setup.  I am just trying to verify basic Freeswitch functionality.  
@@ -160,9 +163,12 @@ Note from my diagram above, I have two VoIP clients on my home LAN, configured t
 ```
 jkozik@u2004:~/projects/freeswitchsignalwire2025$ docker exec -it freeswitch  sh -c "fs_cli -x 'show registrations'"
 reg_user,realm,token,url,expires,network_ip,network_port,network_proto,hostname,metadata
-1002,192.168.100.128,0_3443613935@192.168.100.94,sofia/internal/sip:1002@192.168.100.94:5060;transport=TCP,1753385645,192.168.100.94,11807,tcp,u2004.kozik.net,
-1001,192.168.100.128,HrPIgrWZbLjx-jeRJKXmKw..,sofia/internal/sip:1001@192.168.100.122:64379;rinstance=838a90f680202103;transport=UDP,1753382108,192.168.100.122,64379,udp,u2004.kozik.net,
-2 total.
+1002,192.168.100.128,0_2770666141@192.168.100.94,sofia/internal/sip:1002@192.168.100.94:5060,1755830164,192.168.100.94,5060,udp,u2004.kozik.net,
+1005,192.168.100.128,65E5E870D9C9CDD082FE7B46CF1651BE52A9D711,sofia/ext-phones-5070/sip:1005@10.65.11.3:29431;rinstance=67D7412C;transport=tcp;fs_nat=yes;fs_path=sip%3A1005%40167.99.119.203%3A29431%3Brinstance%3D67D7412C%3Btransport%3Dtcp,1755828957,167.99.119.203,29431,tcp,u2004.kozik.net,
+1001,192.168.100.128,CP9ZKRluCNu8o8_1Bi-CzA..,sofia/internal/sip:1001@192.168.100.143:64842;transport=UDP;rinstance=8cd56e1471463c20,1755828477,192.168.100.143,64842,udp,u2004.kozik.net,
+1011,192.168.100.128,03f16275a465412e8b357203bdbc6388,sofia/internal/sip:1011@192.168.100.122:56647;transport=TCP;ob,1755828763,192.168.100.143,36938,tcp,u2004.kozik.net,
+
+4 total.
 jkozik@u2004:~/projects/freeswitchsignalwire2025$
 ```
 ### Client 1001 calls client 1002
@@ -240,6 +246,10 @@ The way Signalwire works, the phone number that I bought maps to the client 1001
 ## Check 1001 call to my mobile phone
 Like the previous call, it gets routed from my Freeswitch to the Signalwire server that then completes the call to my mobile phone 630-215-XXXX.
 <img width="1343" height="564" alt="image" src="https://github.com/user-attachments/assets/cbcf6ebf-d14d-4031-8a46-382e25c3a0c6" />
+
+## Check 1001 call to GroundWire SIP phone registered as 1005
+This is similar but different use case.  These end points are registered as extensions on the freeswitch.  Even though 1005 sits on the Internet, not on the home LAN.  Freeswitch has special profile parameter called `autonat` that makes this works.
+
 
 # Summary
 Thanks to the [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch) image and thanks to [Omid's video](https://www.youtube.com/watch?v=ax1uL4Z9Nao&t=63s), the  Freeswitch/Signalwire connector setup is realitively easy to setup.  I am attending the upcoming Cluecon conference and I'll ask if there's an official image and docker-compose.yaml file that I should use.
