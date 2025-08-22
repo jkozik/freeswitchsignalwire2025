@@ -14,6 +14,9 @@ What I wanted to do was run a freeswitch container on my home LAN and connect it
 ## Here's my firewall settings
 <img width="1414" height="385" alt="image" src="https://github.com/user-attachments/assets/7ce2c92e-4446-410a-a7d7-b975d3c6d8a7" />
 
+<img width="1503" height="551" alt="image" src="https://github.com/user-attachments/assets/237d757d-9ad7-442c-8fa4-513c128d7cf5" />
+
+
 ## download repository
 Clone my repository and look at the `docker-compose.yaml` file.
 ```
