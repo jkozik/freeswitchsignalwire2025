@@ -247,8 +247,9 @@ The way Signalwire works, the phone number that I bought maps to the client 1001
 Like the previous call, it gets routed from my Freeswitch to the Signalwire server that then completes the call to my mobile phone 630-215-XXXX.
 <img width="1343" height="564" alt="image" src="https://github.com/user-attachments/assets/cbcf6ebf-d14d-4031-8a46-382e25c3a0c6" />
 
-## Check 1001 call to GroundWire SIP phone registered as 1005
+## Check from GroundWire SIP phone registered as 1005 to x1001
 This is similar but different use case.  These end points are registered as extensions on the freeswitch.  Even though 1005 sits on the Internet, not on the home LAN.  Freeswitch has special profile parameter called `autonat` that makes this works.
+<img width="1076" height="574" alt="image" src="https://github.com/user-attachments/assets/ec3bd4b0-0aeb-436a-8deb-e72f0afc0cc7" />
 
 
 # Summary
