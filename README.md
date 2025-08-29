@@ -259,4 +259,6 @@ Thanks to the [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch
 - Docker image [`safarov/freeswitch`](https://hub.docker.com/r/safarov/freeswitch)
 - [mod_signalwire](https://developer.signalwire.com/freeswitch/FreeSWITCH-Explained/Modules/mod_signalwire_19595544/#3-dialplan-sample) documentation
 - [Learn FreeSWITCH (Part8) - SignalWire Connector](https://www.youtube.com/watch?v=ax1uL4Z9Nao&t=63s)
+- [
+ClueCon Weekly - Jan 13, 2016 - Brian West - NAT Traversal with FreeSWITCH](https://www.youtube.com/watch?v=_WSx-T6TriI)
 
